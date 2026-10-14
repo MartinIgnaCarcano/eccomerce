@@ -1,0 +1,672 @@
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+[2026-10-01 20:38:13,440] ERROR in pedidos: listar_pedidos_admin failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'pedidos.claim_token' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/pedidos.py", line 279, in listar_todos_pedidos
+    total = query.count()
+            ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 3146, in count
+    self._legacy_from_self(col).enable_eagerloads(False).scalar()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2835, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2808, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'pedidos.claim_token' in 'SELECT'")
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT pedidos.id AS pedidos_id, pedidos.fecha AS pedidos_fecha, pedidos.estado AS pedidos_estado, pedidos.usuario_id AS pedidos_usuario_id, pedidos.total AS pedidos_total, pedidos.costo_envio AS pedidos_costo_envio, pedidos.claim_token AS pedidos_claim_token, pedidos.expires_at AS pedidos_expires_at, pedidos.stock_state AS pedidos_stock_state 
+FROM pedidos) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+[2026-10-01 20:38:23,376] ERROR in envios: envios endpoint failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'zonas_envio.nombre' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/envios.py", line 19, in listar_zonas
+    zonas = ZonaEnvio.query.all()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'zonas_envio.nombre' in 'SELECT'")
+[SQL: SELECT zonas_envio.id AS zonas_envio_id, zonas_envio.nombre AS zonas_envio_nombre, zonas_envio.cp_inicio AS zonas_envio_cp_inicio, zonas_envio.cp_fin AS zonas_envio_cp_fin, zonas_envio.tipo_envio AS zonas_envio_tipo_envio, zonas_envio.precio AS zonas_envio_precio, zonas_envio.activa AS zonas_envio_activa 
+FROM zonas_envio]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+andreani
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+[2026-10-02 07:48:10,516] ERROR in pedidos: listar_pedidos failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'pedidos.claim_token' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/pedidos.py", line 39, in listar_pedidos
+    .all()
+     ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'pedidos.claim_token' in 'SELECT'")
+[SQL: SELECT pedidos.id AS pedidos_id, pedidos.fecha AS pedidos_fecha, pedidos.estado AS pedidos_estado, pedidos.usuario_id AS pedidos_usuario_id, pedidos.total AS pedidos_total, pedidos.costo_envio AS pedidos_costo_envio, pedidos.claim_token AS pedidos_claim_token, pedidos.expires_at AS pedidos_expires_at, pedidos.stock_state AS pedidos_stock_state 
+FROM pedidos 
+WHERE pedidos.usuario_id = %(usuario_id_1)s ORDER BY pedidos.fecha DESC]
+[parameters: {'usuario_id_1': '1'}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+[2026-10-02 07:49:21,469] ERROR in pedidos: listar_pedidos failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'pedidos.claim_token' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/pedidos.py", line 39, in listar_pedidos
+    .all()
+     ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'pedidos.claim_token' in 'SELECT'")
+[SQL: SELECT pedidos.id AS pedidos_id, pedidos.fecha AS pedidos_fecha, pedidos.estado AS pedidos_estado, pedidos.usuario_id AS pedidos_usuario_id, pedidos.total AS pedidos_total, pedidos.costo_envio AS pedidos_costo_envio, pedidos.claim_token AS pedidos_claim_token, pedidos.expires_at AS pedidos_expires_at, pedidos.stock_state AS pedidos_stock_state 
+FROM pedidos 
+WHERE pedidos.usuario_id = %(usuario_id_1)s ORDER BY pedidos.fecha DESC]
+[parameters: {'usuario_id_1': '1'}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+andreani
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+ERROR: OperationalError('(pymysql.err.OperationalError) (1054, "Unknown column \'claim_token\' in \'INSERT INTO\'")')
+[2026-10-07 19:25:12,976] ERROR in envios: envios endpoint failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'zonas_envio.cp_inicio' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/envios.py", line 19, in listar_zonas
+    zonas = ZonaEnvio.query.all()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'zonas_envio.cp_inicio' in 'SELECT'")
+[SQL: SELECT zonas_envio.id AS zonas_envio_id, zonas_envio.nombre AS zonas_envio_nombre, zonas_envio.cp_inicio AS zonas_envio_cp_inicio, zonas_envio.cp_fin AS zonas_envio_cp_fin, zonas_envio.tipo_envio AS zonas_envio_tipo_envio, zonas_envio.precio AS zonas_envio_precio, zonas_envio.activa AS zonas_envio_activa 
+FROM zonas_envio]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+[2026-10-07 19:25:18,845] ERROR in envios: envios endpoint failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'zonas_envio.cp_inicio' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/envios.py", line 19, in listar_zonas
+    zonas = ZonaEnvio.query.all()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'zonas_envio.cp_inicio' in 'SELECT'")
+[SQL: SELECT zonas_envio.id AS zonas_envio_id, zonas_envio.nombre AS zonas_envio_nombre, zonas_envio.cp_inicio AS zonas_envio_cp_inicio, zonas_envio.cp_fin AS zonas_envio_cp_fin, zonas_envio.tipo_envio AS zonas_envio_tipo_envio, zonas_envio.precio AS zonas_envio_precio, zonas_envio.activa AS zonas_envio_activa 
+FROM zonas_envio]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+[2026-10-12 15:21:05,642] ERROR in envios: envios endpoint failed
+Traceback (most recent call last):
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1054, "Unknown column 'zonas_envio.cp_inicio' in 'SELECT'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/envios.py", line 19, in listar_zonas
+    zonas = ZonaEnvio.query.all()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 558, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 822, in _read_query_result
+    result.read()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 1200, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 772, in _read_packet
+    packet.raise_for_error()
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/home/loveuotk/virtualenv/caricias/api/3.11/lib/python3.11/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1054, "Unknown column 'zonas_envio.cp_inicio' in 'SELECT'")
+[SQL: SELECT zonas_envio.id AS zonas_envio_id, zonas_envio.nombre AS zonas_envio_nombre, zonas_envio.cp_inicio AS zonas_envio_cp_inicio, zonas_envio.cp_fin AS zonas_envio_cp_fin, zonas_envio.tipo_envio AS zonas_envio_tipo_envio, zonas_envio.precio AS zonas_envio_precio, zonas_envio.activa AS zonas_envio_activa 
+FROM zonas_envio]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+[2026-10-12 16:51:10,120] ERROR in pagos: ERROR crear_preferencia_pago
+Traceback (most recent call last):
+  File "/home/loveuotk/caricias/api/routes/pagos.py", line 370, in crear_preferencia_pago
+    raise Exception(f"MercadoPago Error: {pref_info}")
+Exception: MercadoPago Error: {'status': 400, 'response': {'message': 'notification_url invalid. Wrong format', 'error': 'invalid_notification_url', 'status': 400, 'cause': None}}
+EMAIL ERROR: Bienvenida/o a Caricias SMTPAuthenticationError(535, b'5.7.8 Authentication failed')
+viacargo
+andreani

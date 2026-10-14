@@ -1,0 +1,14 @@
+__pycache__/
+migrations/
+venv/
+*.pyc
+.vscode/
+.idea/
+image.png
+uploads/
+
+# Variables de entorno / secretos
+.env
+.env.*
+*.env
+.env copy

@@ -1,0 +1,500 @@
+=== START empty 2021-11-17 20:14:34 ===
+Datos de WooCommerce eliminados
+Datos predeterminados de WooCommerce creados
+Contenido de WordPress eliminado
+=== END empty 2021-11-17 20:14:34 ===
+
+=== START save 2021-11-17 20:14:47 ===
+Ajustes guardados
+=== END save 2021-11-17 20:14:47 ===
+
+=== START import 2021-11-17 20:14:51 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+1 categoría importada
+Importando artículos del CMS...
+4 artículos importados
+23 etiquetas importadas
+Importando categorías de productos...
+29 categorías de productos importados
+Importando productos...
+=== START import 2021-11-17 20:28:27 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+140 productos importados
+662 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:31:15 ===
+
+=== START import 2021-11-17 20:37:58 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:37:59 ===
+
+=== START import 2021-11-17 20:38:23 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:38:23 ===
+
+=== START import 2021-11-17 20:38:28 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:38:28 ===
+
+=== START import 2021-11-17 20:39:44 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:39:44 ===
+
+=== START import 2021-11-17 20:39:47 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:39:47 ===
+
+=== START import 2021-11-17 20:39:50 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:39:50 ===
+
+=== START import 2021-11-17 20:39:51 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:39:52 ===
+
+=== START import 2021-11-17 20:39:54 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:39:54 ===
+
+=== START import 2021-11-17 20:39:55 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:39:55 ===
+
+=== START import 2021-11-17 20:40:01 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:40:01 ===
+
+=== START import 2021-11-17 20:40:31 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:40:31 ===
+
+=== START import 2021-11-17 20:40:46 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:40:47 ===
+
+=== START import 2021-11-17 20:46:27 ===
+Conectado con éxito a la base de datos PrestaShop
+Datos de PrestaShop encontrados:
+249 productos
+29 categorías productos
+4 artículos del CMS
+1 categoría CMS
+2 empleados
+727 clientes
+296 pedidos
+
+[WARNING] Tu base de datos de PrestaShop contiene varios clientes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos atributos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos accesorios. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos pedidos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios fabricantes. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/brands/" target="_blank">Extensión Marcas</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene varios idiomas. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/wpml/" target="_blank">Extensión WPML</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene algunos adjuntos. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/attachments/" target="_blank">Extensión de adjuntos</a> para importarlos.
+[WARNING] Tu base de datos de PrestaShop contiene VAT numbers. Necesitas la <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/" target="_blank">versión Premium</a> y el <a href="https://www.fredericgilles.net/fg-prestashop-to-woocommerce/eu-vat/" target="_blank">EU VAT add-on</a> para importarlos.
+HTTP connection successful
+Importando categorías de CMS...
+0 categorías importadas
+Importando artículos del CMS...
+0 artículos importados
+0 etiquetas importadas
+Importando categorías de productos...
+0 categorías de productos importados
+Importando productos...
+0 productos importados
+0 medios importados
+IMPORT COMPLETED
+=== END import 2021-11-17 20:46:28 ===
+

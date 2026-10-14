@@ -1,0 +1,36 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/loveuotk/mdz/api"
+PassengerBaseURI "/api"
+PassengerPython "/home/loveuotk/virtualenv/mdz/api/3.11/bin/python"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+Options -Indexes
+<FilesMatch "\.(php|php5|phtml|exe|js|sh)$">
+  Deny from all
+</FilesMatch>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+SetEnv ADMIN_EMAIL loversplay.soporte@gmail.com
+SetEnv DB_HOST localhost
+SetEnv DB_NAME loveuotk_loversplay2026
+SetEnv DB_PASSWORD ii?3bA!]&Ndn
+SetEnv DB_PORT 3306
+SetEnv DB_TYPE mysql
+SetEnv DB_USER loveuotk_admin2026
+SetEnv MAIL_DEFAULT_SENDER loversplay.soporte@gmail.com
+SetEnv MAIL_PASSWORD SRcJ8EPCka0rTsy1
+SetEnv MAIL_PORT 587
+SetEnv MAIL_SERVER smtp-relay.brevo.com
+SetEnv MAIL_USERNAME 9fad63001@smtp-brevo.com
+SetEnv MAIL_USE_SSL false
+SetEnv MAIL_USE_TLS true
+SetEnv MP_NOTIFICATION_URL https://mdz.loversplaysexshop.com/api/pagos/webhook
+SetEnv URL_BASE_IMG https://mdz.loversplaysexshop.com/uploads/
+SetEnv MP_ACCESS_TOKEN APP_USR-5851724562164015-041617-58faa15c62c35e855c2e8cf621779ee4-57957665
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
+
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/loveuotk/caricias"
+PassengerBaseURI "/api"
+PassengerPython "/home/loveuotk/virtualenv/caricias/3.11/bin/python"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END

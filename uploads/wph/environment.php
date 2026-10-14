@@ -1,0 +1,2 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+$environment_variable = '{"theme":{"folder_name":"savoy","mapped_name":"guaymallen"},"child_theme":{"folder_name":"savoy-child","mapped_name":"guaymallen-ch"},"allowed_paths":["\/home\/loveuotk\/public_html\/wp-content\/themes"],"cache_path":"\/home\/loveuotk\/public_html\/wp-content\/cache\/wph\/","wordpress_directory":"","site_relative_path":"\/"}'; ?>
