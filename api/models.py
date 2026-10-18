@@ -15,8 +15,8 @@ class Usuario(db.Model):
     password_hash = db.Column(db.String(200), nullable=False)
     fecha_registro = db.Column(db.DateTime, default=now_ar)
     telefono = db.Column(db.String(20))
-    rol = db.Column(db.String(20), default="cliente")  # cliente, admin, guest
-    activo = db.Column(db.Boolean, default=True)
+    rol = db.Column(db.String(20), nullable=False, default="cliente", server_default="cliente")  # cliente, admin, guest
+    activo = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
     pedidos = db.relationship("Pedido", backref="usuario", lazy=True)
     resenas = db.relationship("Resena", backref="usuario", lazy=True, cascade="all, delete-orphan")
     direccion = db.relationship("Direccion",backref="usuario",uselist=False,cascade="all, delete-orphan")

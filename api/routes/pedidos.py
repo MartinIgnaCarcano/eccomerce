@@ -127,7 +127,7 @@ def crear_pedido():
         usuario_id = int(identity) if identity is not None else None
 
         if usuario_id is None:
-            email = data.get("email")
+            email = (data.get("email") or "").strip().lower()
             nombre = data.get("nombre", "Invitado")
             telefono = data.get("telefono")
 
@@ -135,9 +135,16 @@ def crear_pedido():
                 return jsonify({"error": "Para pedidos sin registrarse, se requiere email"}), 400
 
             usuario = Usuario.query.filter_by(email=email).first()
+            current_app.logger.info(
+                "guest-checkout email=%r match_id=%s match_rol=%s",
+                email,
+                usuario.id if usuario else None,
+                usuario.rol if usuario else None,
+            )
             # No asociar el pedido a una cuenta registrada ajena (evita pedidos
-            # fantasma/phishing). Solo se reutiliza un registro guest existente.
-            if usuario and usuario.rol != "guest":
+            # fantasma/phishing). Se reutiliza solo un registro guest existente
+            # (o uno con rol NULL, legacy pre-migración).
+            if usuario and usuario.rol and usuario.rol != "guest":
                 return jsonify({
                     "error": "Ese email pertenece a una cuenta registrada. Iniciá sesión para continuar."
                 }), 409
