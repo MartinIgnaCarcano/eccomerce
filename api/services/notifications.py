@@ -18,13 +18,15 @@ def _frontend_url():
 
 
 def _safe_send(to, subject, html):
+    # logger y no print(): en el servidor stdout es ASCII y un asunto con
+    # tildes o "·" hacía explotar el print, cortando el resto de los envíos.
     if not to:
-        print("EMAIL: destinatario vacío, se ignora:", subject)
+        current_app.logger.warning("EMAIL: destinatario vacio, se ignora: %r", subject)
         return
     try:
         send_email(to=to, subject=subject, html=html)
-    except Exception as e:
-        print("EMAIL ERROR:", subject, repr(e))
+    except Exception:
+        current_app.logger.exception("EMAIL ERROR: to=%r subject=%r", to, subject)
 
 
 # ─────────────────────────────────────────────

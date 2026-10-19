@@ -118,7 +118,7 @@ def webhook_mp():
         pago_info = sdk.payment().get(payment_id)
         pago = (pago_info or {}).get("response") or {}
         if not pago:
-            print("MP SDK sin response:", pago_info)
+            current_app.logger.warning("MP SDK sin response: %r", pago_info)
             return jsonify({"status": "no_response"}), 200
 
         estado = pago.get("status")
