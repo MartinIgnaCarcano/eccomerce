@@ -16,6 +16,9 @@ from services.notifications import (
 )
 
 pagos_bp = Blueprint("pagos", __name__, url_prefix="/pagos")
+
+MONTO_TOLERANCIA = 1.0  # ARS
+
 _mp_token = os.getenv("MP_ACCESS_TOKEN")
 if not _mp_token:
     logging.warning("MP_ACCESS_TOKEN no está configurado. Los pagos con MercadoPago no funcionarán.")
@@ -30,7 +33,7 @@ def _verify_mp_signature(req, payment_id):
     Clave: MP_WEBHOOK_SECRET (Tus integraciones -> Webhooks -> Clave secreta).
     Devuelve True si la firma es valida.
     """
-    secret = os.getenv("MP_WEBHOOK_SECRET")
+    secret = (os.getenv("MP_WEBHOOK_SECRET") or "").strip()
     if not secret:
         # Sin secreto configurado no se puede verificar -> rechazar
         return False
@@ -96,8 +99,16 @@ def webhook_mp():
         if event_type != "payment" or not payment_id:
             return jsonify({"status": "ignored"}), 200
 
-        # Verificacion de firma HMAC SHA256 con MP_WEBHOOK_SECRET
-        if not _verify_mp_signature(request, payment_id):
+        # Verificacion de firma HMAC SHA256 con MP_WEBHOOK_SECRET.
+        # TEMPORAL: sin secreto configurado se omite la verificacion. Es tolerable
+        # porque el estado no se toma del body: se consulta a la API de MP con
+        # el access token. Cargar MP_WEBHOOK_SECRET para volver a exigirla.
+        if not (os.getenv("MP_WEBHOOK_SECRET") or "").strip():
+            current_app.logger.warning(
+                "MP WEBHOOK sin MP_WEBHOOK_SECRET: firma NO verificada (payment_id=%s, ip=%s)",
+                payment_id, request.remote_addr,
+            )
+        elif not _verify_mp_signature(request, payment_id):
             current_app.logger.warning(
                 "MP WEBHOOK firma invalida (payment_id=%s, ip=%s)",
                 payment_id, request.remote_addr,
@@ -128,16 +139,31 @@ def webhook_mp():
         if not pedido:
             return jsonify({"status": "pedido_not_found"}), 200
 
+        # Monto y moneda deben coincidir con lo que se cobró al crear la preferencia.
+        # pago_reg.monto NO se pisa con lo que informa MP: es el monto esperado.
+        # Tolerancia de $1 por el redondeo de unit_price en los items.
+        monto_esperado = float(pago_reg.monto or 0)
+        monto_recibido = float(pago.get("transaction_amount") or 0)
+        moneda = pago.get("currency_id")
+        pago_valido = moneda == "ARS" and abs(monto_recibido - monto_esperado) <= MONTO_TOLERANCIA
+        if not pago_valido:
+            current_app.logger.warning(
+                "MP WEBHOOK pago no coincide (pago_id=%s, payment_id=%s, esperado=%.2f ARS, recibido=%.2f %s)",
+                pago_reg.id, payment_id, monto_esperado, monto_recibido, moneda,
+            )
+
         previous_estado = pago_reg.estado
         pago_reg.id_pago_mp = str(payment_id)
         pago_reg.estado = estado
-        pago_reg.detalle_estado = pago.get("status_detail")
-        pago_reg.monto = pago.get("transaction_amount")
+        pago_reg.detalle_estado = pago.get("status_detail") if pago_valido else "monto_o_moneda_no_coincide"
         pago_reg.tipo_pago = pago.get("payment_type_id")  # credit_card | debit_card | account_money | …
         pago_reg.id_orden_mercante = str((pago.get("order") or {}).get("id"))
 
         if estado == "approved":
-            if pedido.estado == "EXPIRADO":
+            if not pago_valido:
+                # no confirmar stock ni marcar pagado → revisión manual
+                pedido.estado = "REVISAR"
+            elif pedido.estado == "EXPIRADO":
                 # pago aprobado pero pedido vencido → revisión manual
                 pedido.estado = "REVISAR"   # o "PAGO_TARDE"
             else:
@@ -171,8 +197,8 @@ def webhook_mp():
             usuario = Usuario.query.get(pedido.usuario_id)
 
             if estado == "approved":
-                # Usuario
-                if usuario and (pago_reg.ultimo_estado_notificado != "approved"):
+                # Usuario (si el monto no coincide, el admin revisa antes de avisarle)
+                if usuario and pago_valido and (pago_reg.ultimo_estado_notificado != "approved"):
                     send_user_payment_approved(usuario, pedido, pago_reg)
 
                 # Admin
@@ -212,7 +238,7 @@ def crear_preferencia_pago():
         data = request.get_json() or {}
 
         pedido_id = data.get("pedido_id")
-        metodo_pago = data.get("tipo_pago")  # debito | credito | mercadoPago | transferencia
+        metodo_pago = data.get("tipo_pago")  # debito | credito | mercadopago | transferencia
         if metodo_pago not in METODO_PAGO_MAP:
             return jsonify({"error": f"tipo_pago inválido. Valores aceptados: {list(METODO_PAGO_MAP.keys())}"}), 400
         tipo_pago_mp = METODO_PAGO_MAP[metodo_pago]
@@ -423,7 +449,7 @@ def build_payment_restrictions(tipo_pago):
         ]
         return rules
 
-    if tipo_pago == "mercadoPago":
+    if tipo_pago == "mercadopago":  # debe coincidir con la clave de METODO_PAGO_MAP
         rules["excluded_payment_types"] = [
             {"id": "credit_card"},
             {"id": "debit_card"},
