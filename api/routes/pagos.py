@@ -353,10 +353,14 @@ def crear_preferencia_pago():
                 "pending": f"https://cariciassexshop.com/pagos?status=pending&pedido_id={pedido_id}"
             },
             "auto_return": "approved",
-            "notification_url": os.getenv("MP_NOTIFICATION_URL"),
             "binary_mode": True
         }
-        
+
+        # strip(): un espacio en el .env hace que MP rechace la URL por formato
+        notification_url = (os.getenv("MP_NOTIFICATION_URL") or "").strip()
+        if notification_url:
+            preference_data["notification_url"] = notification_url
+
 
         # Agregar reglas de pagos SOLO si existen
         if payment_rules is not None:
