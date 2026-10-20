@@ -2,7 +2,7 @@ import os
 import time
 import threading
 from flask import Blueprint, json, request, jsonify, current_app
-from models import ImagenProducto, Producto, Usuario, Categoria, Pedido, PedidoDetalle, now_ar
+from models import ImagenProducto, Producto, Usuario, Categoria, Pedido, PedidoDetalle, Favorito, Resena, now_ar
 from werkzeug.utils import secure_filename
 from database import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -967,6 +967,42 @@ def eliminar_producto(id):
         producto.activo=False
         db.session.commit()
         return jsonify({"message": "Producto desactivado"}), 200
+    except Exception:
+        db.session.rollback()
+        current_app.logger.exception("productos endpoint failed")
+        return jsonify({"error": "Error interno"}), 500
+
+# Eliminar producto DEFINITIVAMENTE (ADMIN)
+@productos_bp.route("/<int:id>/definitivo", methods=["DELETE"])
+@jwt_required()
+def eliminar_producto_definitivo(id):
+    admin = require_admin()
+    if not admin:
+        return jsonify({"error": "Acceso denegado"}), 403
+    try:
+        producto = Producto.query.get(id)
+        if not producto:
+            return jsonify({"error": "Producto no encontrado"}), 404
+
+        # Si figura en pedidos no se borra: se perdería el historial de ventas
+        en_pedidos = PedidoDetalle.query.filter_by(producto_id=id).count()
+        if en_pedidos:
+            return jsonify({
+                "error": f"El producto figura en {en_pedidos} pedido(s) y no se puede eliminar. Desactivalo en su lugar."
+            }), 409
+
+        # Dependientes borrados a mano: no se confía en el ON DELETE CASCADE de
+        # la base (imagenes usa passive_deletes). Las categorías se desvinculan
+        # por la relación. Los archivos en disco se conservan (la galería
+        # permite reutilizarlos en otros productos).
+        Favorito.query.filter_by(producto_id=id).delete(synchronize_session=False)
+        Resena.query.filter_by(producto_id=id).delete(synchronize_session=False)
+        ImagenProducto.query.filter_by(producto_id=id).delete(synchronize_session=False)
+        nombre = producto.nombre
+        db.session.delete(producto)
+        db.session.commit()
+        current_app.logger.info("Producto eliminado definitivamente id=%s por admin id=%s", id, admin.id)
+        return jsonify({"message": f"Producto \"{nombre}\" eliminado definitivamente"}), 200
     except Exception:
         db.session.rollback()
         current_app.logger.exception("productos endpoint failed")
