@@ -256,10 +256,20 @@ def crear_preferencia_pago():
             if int(identity) != pedido.usuario_id:
                 return jsonify({"error": "No autorizado para este pedido"}), 403
         else:
-            # Invitado: debe presentar el claim_token entregado al crear el pedido
+            # Invitado: debe presentar el claim_token entregado al crear el pedido.
+            # TEMPORAL: el front publicado todavia no lo manda. Mientras
+            # PAGO_EXIGIR_CLAIM_TOKEN no sea "true", se acepta sin token (con
+            # warning). Si viene un token, siempre se valida.
             claim_token = data.get("claim_token") or ""
-            if not pedido.claim_token or not hmac.compare_digest(claim_token, pedido.claim_token):
-                return jsonify({"error": "No autorizado para este pedido"}), 403
+            exigir = os.getenv("PAGO_EXIGIR_CLAIM_TOKEN", "false").strip().lower() == "true"
+            if claim_token or exigir:
+                if not pedido.claim_token or not hmac.compare_digest(claim_token, pedido.claim_token):
+                    return jsonify({"error": "No autorizado para este pedido"}), 403
+            else:
+                current_app.logger.warning(
+                    "preferencia sin claim_token aceptada (pedido_id=%s, ip=%s)",
+                    pedido_id, request.remote_addr,
+                )
 
         detalles = pedido.detalles
         costo_envio = float(pedido.costo_envio or 0)
