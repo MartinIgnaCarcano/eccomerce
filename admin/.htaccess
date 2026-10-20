@@ -1,0 +1,19 @@
+# El panel es una SPA: las rutas (/admin/productos, /admin/pedidos, ...)
+# las resuelve React en el navegador. Si el archivo pedido no existe,
+# se entrega index.html para que recargar o volver atrás no dé 404.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /admin/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /admin/index.html [L]
+</IfModule>
+
+# index.html sin caché: así, al subir un build nuevo, el navegador toma
+# enseguida los nombres nuevos de JS/CSS.
+<Files "index.html">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache"
+  </IfModule>
+</Files>
