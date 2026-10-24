@@ -8,6 +8,7 @@ Configuración (.env):
 
 Si falta la cuenta pedida se usa MAIL_USERNAME / MAIL_PASSWORD como respaldo.
 """
+import logging
 import os
 import re
 import smtplib
@@ -94,6 +95,9 @@ def send_email_async(to: str, subject: str, html: str, cc=None, bcc=None, reply_
     """Arma el mail ya y lo envía en segundo plano, para no demorar la respuesta
     (checkout, webhook). Los errores quedan en el log."""
     app = current_app._get_current_object()
+    # Sin esto el logger de Flask hereda WARNING y los envíos OK no aparecen en stderr.log
+    if app.logger.level == logging.NOTSET:
+        app.logger.setLevel(logging.INFO)
     msg, destinatarios = _construir(to, subject, html, cuenta, cc, bcc, reply_to)
 
     def _worker():
