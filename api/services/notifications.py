@@ -71,7 +71,8 @@ def _es_registrado(usuario: Usuario | None) -> bool:
 
 def _safe_send(to, subject, html, cuenta="ventas", reply_to=None):
     # Nunca corta el flujo que lo llama (checkout, webhook): solo registra.
-    # logger y no print(): en el servidor stdout es ASCII.
+    # print() es seguro: logging_setup lo manda a logs/app.log en UTF-8.
+    print(f"[MAIL] _safe_send: cuenta={cuenta} to={to!r} subject={subject!r}", flush=True)
     if not to:
         current_app.logger.warning("EMAIL: destinatario vacio, se ignora: %r", subject)
         return

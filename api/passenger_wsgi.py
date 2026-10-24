@@ -21,4 +21,8 @@ def _load_env_file(path):
 
 _load_env_file(os.path.join(BASE_DIR, ".env"))
 
+# Logs y print() a logs/app.log (antes de importar la app)
+from logging_setup import configurar_logs
+configurar_logs()
+
 from app import app as application

@@ -74,15 +74,19 @@ def _enviar_smtp(msg, destinatarios, cuenta):
     use_tls = _env("MAIL_USE_TLS", "false").lower() == "true"
     contexto = ssl.create_default_context()
 
+    print(f"[MAIL] conectando a {host}:{port} ssl={use_ssl} tls={use_tls} como {user} → {destinatarios}", flush=True)
     if use_ssl:
         smtp = smtplib.SMTP_SSL(host, port, timeout=20, context=contexto)
     else:
         smtp = smtplib.SMTP(host, port, timeout=20)
     with smtp:
+        print("[MAIL] conectado", flush=True)
         if use_tls and not use_ssl:
             smtp.starttls(context=contexto)
         smtp.login(user, password)
+        print("[MAIL] login OK", flush=True)
         smtp.send_message(msg, from_addr=user, to_addrs=destinatarios)
+        print(f"[MAIL] enviado: {msg['Subject']!r}", flush=True)
 
 
 def send_email(to: str, subject: str, html: str, cc=None, bcc=None, reply_to=None, cuenta="ventas"):
@@ -95,16 +99,21 @@ def send_email_async(to: str, subject: str, html: str, cc=None, bcc=None, reply_
     """Arma el mail ya y lo envía en segundo plano, para no demorar la respuesta
     (checkout, webhook). Los errores quedan en el log."""
     app = current_app._get_current_object()
-    # Sin esto el logger de Flask hereda WARNING y los envíos OK no aparecen en stderr.log
+    # Por si la app arranca sin logging_setup (ej. local): que se vean los INFO
     if app.logger.level == logging.NOTSET:
         app.logger.setLevel(logging.INFO)
+    print(f"[MAIL] preparando: cuenta={cuenta} to={to!r} subject={subject!r}", flush=True)
     msg, destinatarios = _construir(to, subject, html, cuenta, cc, bcc, reply_to)
 
     def _worker():
+        print(f"[MAIL] hilo iniciado para {to!r}", flush=True)
         try:
             _enviar_smtp(msg, destinatarios, cuenta)
             app.logger.info("EMAIL enviado: cuenta=%s to=%r subject=%r", cuenta, to, subject)
         except Exception:
             app.logger.exception("EMAIL ERROR: cuenta=%s to=%r subject=%r", cuenta, to, subject)
+        finally:
+            print(f"[MAIL] hilo terminado para {to!r}", flush=True)
 
     threading.Thread(target=_worker, daemon=True).start()
+    print(f"[MAIL] hilo lanzado para {to!r}", flush=True)

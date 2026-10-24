@@ -6,6 +6,7 @@ venv/
 .idea/
 image.png
 uploads/
+logs/
 
 # Variables de entorno / secretos
 .env
