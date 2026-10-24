@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from markupsafe import escape
 from services.email_service import send_email
 from services.ratelimit import rate_limit
@@ -34,8 +34,10 @@ def contact():
             to="soporte@cariciassexshop.com",
             subject=f"Contacto web: {data.get('subject', '')}",
             html=html,
-            reply_to=data.get("email")
+            reply_to=data.get("email"),
+            cuenta="soporte",
         )
         return jsonify({"ok": True}), 200
     except Exception:
+        current_app.logger.exception("EMAIL ERROR: formulario de contacto")
         return jsonify({"ok": False, "error": "Error al enviar el mensaje"}), 500

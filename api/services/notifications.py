@@ -1,37 +1,132 @@
 # services/notifications.py
+#
+# Mails transaccionales. Remitentes:
+#   ventas@  → pedidos, pagos, transferencias y avisos al admin
+#   soporte@ → bienvenida
+# Los datos que vienen del usuario (nombre, email, teléfono, nombres de
+# producto) se escapan siempre con _e() antes de meterlos en el HTML.
 import os
+from datetime import datetime
 from flask import current_app
+from markupsafe import escape
 from models import Usuario, Pedido, Pago
-from services.email_service import send_email
+from services.email_service import send_email_async
 
 
 # ─────────────────────────────────────────────
 #  Helpers internos
 # ─────────────────────────────────────────────
 
+ESTADOS_PEDIDO = {
+    "PENDIENTE_PAGO": "Pendiente de pago",
+    "PAGADO": "Pagado",
+    "RECHAZADO": "Pago rechazado",
+    "EXPIRADO": "Vencido",
+    "REVISAR": "En revisión",
+    "ENVIADO": "Enviado",
+    "ENTREGADO": "Entregado",
+}
+
+METODOS_PAGO = {
+    "mercadopago": "Mercado Pago",
+    "debito": "Tarjeta de débito",
+    "credito": "Tarjeta de crédito (+10%)",
+    "transferencia": "Transferencia bancaria",
+}
+
+
+def _e(valor) -> str:
+    return str(escape("" if valor is None else valor))
+
+
 def _admin_email():
     return current_app.config.get("ADMIN_EMAIL") or os.getenv("ADMIN_EMAIL")
 
 
 def _frontend_url():
-    return os.getenv("FRONTEND_URL", "#").rstrip("/")
+    return (os.getenv("FRONTEND_URL") or "https://cariciassexshop.com").strip().rstrip("/")
 
 
-def _safe_send(to, subject, html):
-    # logger y no print(): en el servidor stdout es ASCII y un asunto con
-    # tildes o "·" hacía explotar el print, cortando el resto de los envíos.
+def _money(valor) -> str:
+    """$ 12.345,67 (formato argentino)."""
+    s = f"{float(valor or 0):,.2f}"
+    return "$ " + s.replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def _fecha(dt: datetime | None) -> str:
+    return dt.strftime("%d/%m/%Y %H:%M") if dt else ""
+
+
+def _nombre(usuario: Usuario | None) -> str:
+    return _e((usuario.nombre if usuario else None) or "allí")
+
+
+def _metodo(pago: Pago) -> str:
+    return _e(METODOS_PAGO.get(pago.metodo_pago, pago.metodo_pago or "—"))
+
+
+def _es_registrado(usuario: Usuario | None) -> bool:
+    return bool(usuario and usuario.rol != "guest")
+
+
+def _safe_send(to, subject, html, cuenta="ventas", reply_to=None):
+    # Nunca corta el flujo que lo llama (checkout, webhook): solo registra.
+    # logger y no print(): en el servidor stdout es ASCII.
     if not to:
         current_app.logger.warning("EMAIL: destinatario vacio, se ignora: %r", subject)
         return
     try:
-        send_email(to=to, subject=subject, html=html)
+        send_email_async(to=to, subject=subject, html=html, cuenta=cuenta, reply_to=reply_to)
     except Exception:
         current_app.logger.exception("EMAIL ERROR: to=%r subject=%r", to, subject)
 
 
-# ─────────────────────────────────────────────
-#  Template base — Paleta Caricias (lavanda/lila sobre blanco)
-# ─────────────────────────────────────────────
+def _items_html(pedido: Pedido) -> str:
+    """Tabla de productos + envío + total, para cliente y admin."""
+    filas = ""
+    for d in pedido.detalles:
+        nombre = _e(d.producto.nombre if d.producto else f"Producto #{d.producto_id}")
+        filas += (
+            "<tr>"
+            f"<td style='padding:8px 0;color:#2a212a;font-size:14px;border-bottom:1px solid #f4e5ee;'>{nombre}"
+            f"<span style='color:#8a6f86;'> × {int(d.cantidad)}</span></td>"
+            f"<td style='padding:8px 0;color:#2a212a;font-size:14px;text-align:right;white-space:nowrap;"
+            f"border-bottom:1px solid #f4e5ee;'>{_money(d.subtotal)}</td>"
+            "</tr>"
+        )
+    envio = float(pedido.costo_envio or 0)
+    filas += (
+        "<tr>"
+        "<td style='padding:8px 0;color:#8a6f86;font-size:13px;'>Envío</td>"
+        f"<td style='padding:8px 0;color:#8a6f86;font-size:13px;text-align:right;'>"
+        f"{_money(envio) if envio > 0 else 'A coordinar / sin cargo'}</td>"
+        "</tr>"
+    )
+    return (
+        "<div class='info-card'>"
+        "<table width='100%' cellpadding='0' cellspacing='0'>"
+        f"{filas}"
+        "</table></div>"
+    )
+
+
+def _fila(label, valor, primera=False, highlight=False) -> str:
+    pad = "" if primera else " style=\"padding-top:12px;\""
+    cls = "info-value highlight" if highlight else "info-value"
+    return f"<tr><td class=\"info-label\"{pad}>{label}</td><td class=\"{cls}\"{pad}>{valor}</td></tr>"
+
+
+def _boton(url: str, texto: str, secundario=False) -> str:
+    cls = "cta-button secondary" if secundario else "cta-button"
+    return f'<div class="cta-wrapper"><a href="{_e(url)}" class="{cls}">{texto}</a></div>'
+
+
+def _link_pedidos(usuario: Usuario | None) -> str:
+    """Los registrados ven sus pedidos en /perfil; los invitados no tienen cuenta."""
+    if _es_registrado(usuario):
+        return _boton(f"{_frontend_url()}/perfil/", "Ver mis pedidos", secundario=True)
+    return ""
+
 
 def _base_template(content: str, preview_text: str = "") -> str:
     """
@@ -41,8 +136,7 @@ def _base_template(content: str, preview_text: str = "") -> str:
     Usa tablas para compatibilidad máxima con clientes de correo.
     """
     frontend = _frontend_url()
-    logo_url = f"{frontend}/caricias-logo.png" if frontend != "#" else ""
-    feather_url = f"{frontend}/caricias-logo-pluma.png" if frontend != "#" else ""
+    feather_url = f"{frontend}/caricias-logo-pluma.png"
 
     return f"""
 <!DOCTYPE html>
@@ -332,7 +426,7 @@ def _base_template(content: str, preview_text: str = "") -> str:
       <div class="email-footer">
         <div class="footer-brand">Caricias</div>
         <p class="footer-text">
-          Recibís este correo porque tenés una cuenta en Caricias.<br/>
+          Recibís este correo por tu actividad en Caricias.<br/>
           Si no reconocés esta actividad, <a href="{frontend}/contacto" class="footer-link">contactanos</a>.
         </p>
         <p class="footer-text" style="margin-top:12px;">
@@ -352,82 +446,124 @@ def _base_template(content: str, preview_text: str = "") -> str:
 # ─────────────────────────────────────────────
 
 def send_user_welcome(usuario: Usuario):
-    nombre = usuario.nombre or "allí"
-    frontend = _frontend_url()
+    nombre = _nombre(usuario)
     content = f"""
       <span class="status-badge">Cuenta creada</span>
       <h1 class="greeting">Bienvenida/o,<br/>{nombre}.</h1>
       <p class="body-text">
         Tu cuenta en <strong style="color:#2a212a;">Caricias</strong> fue creada exitosamente
-        con el email <strong style="color:#2a212a;">{usuario.email}</strong>.
+        con el email <strong style="color:#2a212a;">{_e(usuario.email)}</strong>.
       </p>
       <p class="body-text">
         Desde tu perfil podés explorar nuestro catálogo, realizar compras y hacer
         seguimiento de tus pedidos con total discreción.
       </p>
       <div class="success-box">
-        <p class="body-text">
-          Tu información está protegida y tu privacidad, garantizada.
-        </p>
+        <p class="body-text">Tu información está protegida y tu privacidad, garantizada.</p>
       </div>
-      <div class="cta-wrapper">
-        <a href="{frontend}/catalogo" class="cta-button">
-          Explorar catálogo
-        </a>
-      </div>
+      {_boton(f"{_frontend_url()}/catalogo/", "Explorar catálogo")}
     """
     _safe_send(
         usuario.email,
         "Bienvenida/o a Caricias",
-        _base_template(content, preview_text=f"Hola {nombre}, tu cuenta está lista.")
+        _base_template(content, preview_text=f"Hola {nombre}, tu cuenta está lista."),
+        cuenta="soporte",
     )
 
 
-def send_user_order_created(usuario: Usuario, pedido: Pedido):
-    nombre = usuario.nombre or "allí"
-    frontend = _frontend_url()
+def send_user_order_created(usuario: Usuario, pedido: Pedido, pago: Pago):
+    """Pedido creado con Mercado Pago / débito / crédito: incluye el link de pago."""
+    nombre = _nombre(usuario)
+    vence = _fecha(pedido.expires_at)
+    pagar = _boton(pago.url_checkout, "Pagar ahora") if pago.url_checkout else ""
     content = f"""
       <span class="status-badge">Pedido recibido</span>
-      <h1 class="greeting">Tu pedido está<br/>en camino, {nombre}.</h1>
+      <h1 class="greeting">¡Gracias por tu pedido,<br/>{nombre}!</h1>
       <p class="body-text">
-        Recibimos tu pedido y ya lo estamos procesando.
-        Te notificaremos ante cada cambio de estado.
+        Registramos tu pedido <strong style="color:#2a212a;">#{pedido.id}</strong>.
+        Para confirmarlo, completá el pago con <strong style="color:#2a212a;">{_metodo(pago)}</strong>.
+        Si ya lo pagaste, ignorá este botón: te vamos a avisar cuando se acredite.
       </p>
+      {_items_html(pedido)}
       <div class="info-card">
         <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="info-label">Número de pedido</td>
-            <td class="info-value highlight">#{pedido.id}</td>
-          </tr>
-          <tr>
-            <td class="info-label" style="padding-top:12px;">Estado</td>
-            <td class="info-value" style="padding-top:12px;">{pedido.estado}</td>
-          </tr>
-          <tr>
-            <td class="info-label" style="padding-top:12px;">Total</td>
-            <td class="info-value" style="padding-top:12px;">${pedido.total:.2f}</td>
-          </tr>
+          {_fila("Pedido", f"#{pedido.id}", primera=True, highlight=True)}
+          {_fila("Método de pago", _metodo(pago))}
+          {_fila("Total a pagar", _money(pago.monto), highlight=True)}
+          {_fila("Reservado hasta", vence) if vence else ""}
         </table>
       </div>
+      {pagar}
       <p class="body-text" style="font-size:13px;color:#8a6f86;">
+        Si no completás el pago antes del vencimiento, la reserva de los productos se libera.
         El envío se realiza en embalaje neutro y discreto, sin identificación del remitente.
       </p>
-      <div class="cta-wrapper">
-        <a href="{frontend}/mis-pedidos/{pedido.id}" class="cta-button">
-          Ver mi pedido
-        </a>
-      </div>
+      {_link_pedidos(usuario)}
     """
     _safe_send(
         usuario.email,
-        f"Pedido #{pedido.id} confirmado",
-        _base_template(content, preview_text=f"Pedido #{pedido.id} recibido · ${pedido.total:.2f}")
+        f"Recibimos tu pedido #{pedido.id}",
+        _base_template(content, preview_text=f"Pedido #{pedido.id} · {_money(pago.monto)} · completá el pago."),
+    )
+
+
+def send_user_transfer_instructions(usuario: Usuario, pedido: Pedido, pago: Pago, instrucciones: dict):
+    """Pedido creado con transferencia: datos bancarios y cómo enviar el comprobante."""
+    nombre = _nombre(usuario)
+    vence = _fecha(pedido.expires_at)
+    cbu = instrucciones.get("cbu")
+    content = f"""
+      <span class="status-badge">Transferencia bancaria</span>
+      <h1 class="greeting">¡Gracias por tu pedido,<br/>{nombre}!</h1>
+      <p class="body-text">
+        Para confirmar tu pedido <strong style="color:#2a212a;">#{pedido.id}</strong>,
+        transferí el monto indicado a los siguientes datos.
+      </p>
+      {_items_html(pedido)}
+      <div class="info-card">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          {_fila("Monto a transferir", _money(pago.monto), primera=True, highlight=True)}
+          {_fila("Concepto", _e(instrucciones.get("concepto", f"PEDIDO {pedido.id}")))}
+          {_fila("Reservado hasta", vence) if vence else ""}
+        </table>
+      </div>
+      <p class="body-text" style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a6f86;margin-bottom:8px;">
+        Datos bancarios
+      </p>
+      <div class="bank-block">
+        <div class="bank-field">
+          <div class="bank-label">Alias</div>
+          <div class="bank-value">{_e(instrucciones.get("alias", "—"))}</div>
+        </div>
+        {f'''<div class="bank-field">
+          <div class="bank-label">CBU / CVU</div>
+          <div class="bank-value" style="font-size:14px;letter-spacing:1.5px;">{_e(cbu)}</div>
+        </div>''' if cbu else ""}
+        <div class="bank-field">
+          <div class="bank-label">Titular</div>
+          <div class="bank-value">{_e(instrucciones.get("titular", "—"))}</div>
+        </div>
+      </div>
+      <div class="success-box">
+        <p class="body-text">
+          Cuando hagas la transferencia, <strong>respondé este mail con el comprobante</strong>.
+          Apenas verifiquemos la acreditación, preparamos tu pedido.
+        </p>
+      </div>
+      <p class="body-text" style="font-size:13px;color:#8a6f86;">
+        Si no recibimos la transferencia antes del vencimiento, la reserva de los productos se libera.
+      </p>
+      {_link_pedidos(usuario)}
+    """
+    _safe_send(
+        usuario.email,
+        f"Datos para transferir · Pedido #{pedido.id}",
+        _base_template(content, preview_text=f"Transferí {_money(pago.monto)} para confirmar tu pedido #{pedido.id}."),
     )
 
 
 def send_user_payment_approved(usuario: Usuario, pedido: Pedido, pago: Pago):
-    nombre = usuario.nombre or "allí"
-    frontend = _frontend_url()
+    nombre = _nombre(usuario)
     content = f"""
       <span class="status-badge">Pago aprobado</span>
       <h1 class="greeting">¡Pago confirmado,<br/>{nombre}!</h1>
@@ -435,175 +571,102 @@ def send_user_payment_approved(usuario: Usuario, pedido: Pedido, pago: Pago):
         Tu pago fue procesado exitosamente. Ya estamos preparando tu pedido
         para que llegue a vos lo antes posible.
       </p>
+      {_items_html(pedido)}
       <div class="info-card">
         <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="info-label">Pedido</td>
-            <td class="info-value highlight">#{pedido.id}</td>
-          </tr>
-          <tr>
-            <td class="info-label" style="padding-top:12px;">Monto abonado</td>
-            <td class="info-value" style="padding-top:12px;">${pago.monto:.2f}</td>
-          </tr>
-          <tr>
-            <td class="info-label" style="padding-top:12px;">Método</td>
-            <td class="info-value" style="padding-top:12px;">{pago.metodo_pago}</td>
-          </tr>
+          {_fila("Pedido", f"#{pedido.id}", primera=True, highlight=True)}
+          {_fila("Monto abonado", _money(pago.monto))}
+          {_fila("Método", _metodo(pago))}
         </table>
       </div>
       <p class="body-text">
-        Te avisaremos cuando tu pedido sea despachado con el número de seguimiento.
+        Te avisaremos cuando tu pedido sea despachado. El envío se realiza en
+        embalaje neutro y discreto.
       </p>
-      <div class="cta-wrapper">
-        <a href="{frontend}/mis-pedidos/{pedido.id}" class="cta-button">
-          Seguir mi pedido
-        </a>
-      </div>
+      {_link_pedidos(usuario)}
     """
     _safe_send(
         usuario.email,
         f"Pago aprobado · Pedido #{pedido.id}",
-        _base_template(content, preview_text=f"Tu pago de ${pago.monto:.2f} fue confirmado.")
+        _base_template(content, preview_text=f"Tu pago de {_money(pago.monto)} fue confirmado."),
     )
 
 
 def send_user_payment_rejected(usuario: Usuario, pedido: Pedido, pago: Pago):
-    nombre = usuario.nombre or "allí"
-    detail = pago.detalle_estado or "Sin detalle disponible"
-    frontend = _frontend_url()
+    nombre = _nombre(usuario)
+    detalle = _e(pago.detalle_estado or "Sin detalle disponible")
+    reintentar = _boton(pago.url_checkout, "Reintentar pago") if pago.url_checkout else ""
     content = f"""
       <span class="status-badge" style="background:#fdf2f2;border-color:#f5d0d0;color:#c0392b;">Pago rechazado</span>
-      <h1 class="greeting">Hubo un problema<br/>con tu pago.</h1>
+      <h1 class="greeting">Hubo un problema<br/>con tu pago, {nombre}.</h1>
       <p class="body-text">
-        Lamentablemente el pago del pedido <strong style="color:#2a212a;">#{pedido.id}</strong>
+        El pago del pedido <strong style="color:#2a212a;">#{pedido.id}</strong>
         no pudo procesarse. Tu pedido sigue reservado y podés reintentar el pago.
       </p>
       <div class="alert-box">
-        <p class="body-text">Motivo: <strong>{detail}</strong></p>
+        <p class="body-text">Motivo: <strong>{detalle}</strong></p>
       </div>
       <p class="body-text">
-        Podés intentar con otra tarjeta, cambiar el método de pago o contactarnos
-        si el problema persiste.
+        Podés intentar con otra tarjeta o medio de pago. Si el problema persiste,
+        respondé este mail y te ayudamos.
       </p>
-      <div class="cta-wrapper">
-        <a href="{frontend}/mis-pedidos/{pedido.id}/pagar" class="cta-button">
-          Reintentar pago
-        </a>
-      </div>
+      {reintentar}
     """
     _safe_send(
         usuario.email,
         f"Problema con tu pago · Pedido #{pedido.id}",
-        _base_template(content, preview_text="Tu pago no pudo procesarse. Podés reintentarlo.")
-    )
-
-
-def send_user_transfer_instructions(usuario: Usuario, pedido: Pedido, pago: Pago, instrucciones: dict):
-    nombre = usuario.nombre or "allí"
-    frontend = _frontend_url()
-    content = f"""
-      <span class="status-badge">Transferencia bancaria</span>
-      <h1 class="greeting">Instrucciones de<br/>pago, {nombre}.</h1>
-      <p class="body-text">
-        Para confirmar tu pedido <strong style="color:#2a212a;">#{pedido.id}</strong>,
-        realizá la transferencia por el monto indicado a los datos bancarios a continuación.
-      </p>
-
-      <div class="info-card">
-        <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="info-label">Monto a transferir</td>
-            <td class="info-value highlight">${pago.monto:.2f}</td>
-          </tr>
-          <tr>
-            <td class="info-label" style="padding-top:12px;">Concepto / Referencia</td>
-            <td class="info-value" style="padding-top:12px;color:#b07aa8;">
-              {instrucciones.get("concepto", f"Pedido-{pedido.id}")}
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <p class="body-text" style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a6f86;margin-bottom:8px;">
-        Datos bancarios
-      </p>
-      <div class="bank-block">
-        <div class="bank-field">
-          <div class="bank-label">Alias</div>
-          <div class="bank-value">{instrucciones.get("alias", "—")}</div>
-        </div>
-        <div class="bank-field">
-          <div class="bank-label">CBU</div>
-          <div class="bank-value" style="font-size:14px;letter-spacing:1.5px;">{instrucciones.get("cbu", "—")}</div>
-        </div>
-        <div class="bank-field">
-          <div class="bank-label">Titular</div>
-          <div class="bank-value">{instrucciones.get("titular", "—")}</div>
-        </div>
-      </div>
-
-      <p class="body-text" style="font-size:13px;">
-        Una vez realizada la transferencia, marcala como <strong style="color:#2a212a;">"enviada"</strong>
-        desde tu perfil o adjuntá el comprobante para que podamos verificarla.
-      </p>
-      <div class="cta-wrapper">
-        <a href="{frontend}/mis-pedidos/{pedido.id}/comprobante" class="cta-button">
-          Subir comprobante
-        </a>
-      </div>
-    """
-    _safe_send(
-        usuario.email,
-        f"Instrucciones de transferencia · Pedido #{pedido.id}",
-        _base_template(content, preview_text=f"Transferí ${pago.monto:.2f} para confirmar tu pedido #{pedido.id}.")
-    )
-
-
-def send_user_transfer_sent(usuario: Usuario, pedido: Pedido):
-    nombre = usuario.nombre or "allí"
-    frontend = _frontend_url()
-    content = f"""
-      <span class="status-badge">Transferencia informada</span>
-      <h1 class="greeting">Recibimos tu aviso,<br/>{nombre}.</h1>
-      <p class="body-text">
-        Registramos que informaste la transferencia del pedido
-        <strong style="color:#2a212a;">#{pedido.id}</strong>.
-      </p>
-      <div class="success-box">
-        <p class="body-text">
-          Nuestro equipo verificará el pago y recibirás una notificación
-          cuando tu pedido pase a preparación.
-        </p>
-      </div>
-      <p class="body-text">
-        El proceso de verificación suele demorar entre <strong style="color:#2a212a;">1 y 2 horas hábiles</strong>.
-      </p>
-      <div class="cta-wrapper">
-        <a href="{frontend}/mis-pedidos/{pedido.id}" class="cta-button">
-          Ver estado del pedido
-        </a>
-      </div>
-    """
-    _safe_send(
-        usuario.email,
-        f"Transferencia informada · Pedido #{pedido.id}",
-        _base_template(content, preview_text="Recibimos tu aviso. Verificaremos el pago a la brevedad.")
+        _base_template(content, preview_text="Tu pago no pudo procesarse. Podés reintentarlo."),
     )
 
 
 # ─────────────────────────────────────────────
-#  Notificaciones al admin (funcionales, en tono Caricias)
+#  Notificaciones al admin
 # ─────────────────────────────────────────────
 
-def _admin_html(title: str, rows: list[tuple]) -> str:
+def _admin_cliente_rows(usuario: Usuario | None) -> list[tuple]:
+    if not usuario:
+        return [("Cliente", "desconocido")]
+    filas = [
+        ("Cliente", f"{_e(usuario.nombre or '—')} ({'invitado' if usuario.rol == 'guest' else 'registrado'})"),
+        ("Email", _e(usuario.email)),
+        ("Teléfono", _e(usuario.telefono or "—")),
+    ]
+    d = getattr(usuario, "direccion", None)
+    if d:
+        partes = [d.calle, d.departamento, d.provincia, d.codigo_postal, d.pais]
+        filas.append(("Dirección (perfil)", _e(", ".join(str(p) for p in partes if p))))
+    return filas
+
+
+def _admin_html(title: str, rows: list[tuple], pedido: Pedido | None = None, nota: str = "") -> str:
     rows_html = "".join(
         f"<tr>"
         f"<td style='padding:8px 14px;color:#8a6f86;font-size:12px;letter-spacing:1px;"
-        f"text-transform:uppercase;border-bottom:1px solid #f4e5ee;'>{k}</td>"
+        f"text-transform:uppercase;border-bottom:1px solid #f4e5ee;white-space:nowrap;'>{k}</td>"
         f"<td style='padding:8px 14px;color:#2a212a;font-size:14px;font-weight:600;"
         f"border-bottom:1px solid #f4e5ee;'>{v}</td>"
         f"</tr>"
         for k, v in rows
+    )
+    items = ""
+    if pedido is not None:
+        items = "".join(
+            f"<tr><td style='padding:6px 14px;font-size:14px;color:#2a212a;'>"
+            f"{_e(d.producto.nombre if d.producto else f'Producto #{d.producto_id}')} × {int(d.cantidad)}</td>"
+            f"<td style='padding:6px 14px;font-size:14px;color:#2a212a;text-align:right;white-space:nowrap;'>{_money(d.subtotal)}</td></tr>"
+            for d in pedido.detalles
+        )
+        items += (
+            f"<tr><td style='padding:6px 14px;font-size:13px;color:#8a6f86;'>Envío</td>"
+            f"<td style='padding:6px 14px;font-size:13px;color:#8a6f86;text-align:right;'>{_money(pedido.costo_envio)}</td></tr>"
+        )
+        items = (
+            "<p style='margin:20px 0 8px;color:#8a6f86;font-size:12px;letter-spacing:1px;text-transform:uppercase;'>Productos</p>"
+            f"<table style='border-collapse:collapse;width:100%;background:#fbf6f9;border-radius:8px;'>{items}</table>"
+        )
+    nota_html = (
+        f"<p style='margin:20px 0 0;padding:12px 14px;background:#fff7e6;border:1px solid #f5d9a8;"
+        f"border-radius:8px;font-size:14px;color:#7a5a12;'>{nota}</p>" if nota else ""
     )
     return f"""
     <div style="background:#ffffff;font-family:'DM Sans',Arial,sans-serif;padding:24px;
@@ -613,44 +676,43 @@ def _admin_html(title: str, rows: list[tuple]) -> str:
       <table style="border-collapse:collapse;width:100%;background:#fbf6f9;border-radius:8px;overflow:hidden;">
         {rows_html}
       </table>
+      {items}
+      {nota_html}
     </div>
     """
 
 
-def send_admin_new_order(pedido: Pedido, usuario: Usuario | None):
-    u = usuario.email if usuario else "desconocido"
-    html = _admin_html(f"Nuevo pedido #{pedido.id}", [
-        ("Usuario", u),
-        ("Total", f"${pedido.total:.2f}"),
-        ("Estado", pedido.estado),
-    ])
-    _safe_send(_admin_email(), f"[Caricias] Nuevo pedido #{pedido.id}", html)
-
-
 def send_admin_payment_approved(pedido: Pedido, pago: Pago, usuario: Usuario | None):
-    u = usuario.email if usuario else "desconocido"
-    html = _admin_html(f"Pago aprobado · Pedido #{pedido.id}", [
-        ("Usuario", u),
-        ("Monto", f"${pago.monto:.2f}"),
-        ("Método", pago.metodo_pago),
-    ])
-    _safe_send(_admin_email(), f"[Caricias] Pago aprobado · Pedido #{pedido.id}", html)
+    html = _admin_html(f"💰 Pago aprobado · Pedido #{pedido.id}", [
+        ("Pedido", f"#{pedido.id}"),
+        ("Monto", _money(pago.monto)),
+        ("Método", _metodo(pago)),
+        ("Pago MP", _e(pago.id_pago_mp or "—")),
+        ("Estado pedido", _e(ESTADOS_PEDIDO.get(pedido.estado, pedido.estado))),
+        *_admin_cliente_rows(usuario),
+    ], pedido=pedido, nota="Preparar el envío. Coordinar dirección con el cliente si no figura arriba.")
+    _safe_send(_admin_email(), f"[Caricias] Pago aprobado · Pedido #{pedido.id} · {_money(pago.monto)}", html)
 
 
 def send_admin_payment_rejected(pedido: Pedido, pago: Pago, usuario: Usuario | None):
-    u = usuario.email if usuario else "desconocido"
     html = _admin_html(f"Pago rechazado · Pedido #{pedido.id}", [
-        ("Usuario", u),
-        ("Monto", f"${pago.monto:.2f}"),
-        ("Método", pago.metodo_pago),
+        ("Pedido", f"#{pedido.id}"),
+        ("Monto", _money(pago.monto)),
+        ("Método", _metodo(pago)),
+        ("Motivo", _e(pago.detalle_estado or "—")),
+        *_admin_cliente_rows(usuario),
     ])
     _safe_send(_admin_email(), f"[Caricias] Pago rechazado · Pedido #{pedido.id}", html)
 
 
-def send_admin_transfer_sent(pedido: Pedido, usuario: Usuario | None):
-    u = usuario.email if usuario else "desconocido"
-    html = _admin_html(f"Transferencia informada · Pedido #{pedido.id}", [
-        ("Usuario", u),
-        ("Acción requerida", "Verificar comprobante / acreditación"),
-    ])
-    _safe_send(_admin_email(), f"[Caricias] Transferencia a verificar · Pedido #{pedido.id}", html)
+def send_admin_transfer_order(pedido: Pedido, pago: Pago, usuario: Usuario | None):
+    html = _admin_html(f"🏦 Nuevo pedido por transferencia · #{pedido.id}", [
+        ("Pedido", f"#{pedido.id}"),
+        ("Monto a recibir", _money(pago.monto)),
+        ("Concepto", f"PEDIDO {pedido.id}"),
+        ("Reservado hasta", _fecha(pedido.expires_at) or "—"),
+        *_admin_cliente_rows(usuario),
+    ], pedido=pedido,
+        nota="El cliente va a responder el mail de instrucciones con el comprobante. "
+             "Verificá la acreditación en la cuenta y pasá el pedido a PAGADO desde el panel.")
+    _safe_send(_admin_email(), f"[Caricias] Transferencia a verificar · Pedido #{pedido.id} · {_money(pago.monto)}", html)

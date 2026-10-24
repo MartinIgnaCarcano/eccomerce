@@ -227,9 +227,9 @@ def crear_pedido():
         # ✅ un solo commit al final: usuario guest + stock + pedido + detalles
         db.session.commit()
 
-        # Sin notificaciones al crear el pedido: el cliente solo se entera si
-        # elige transferencia (se notifica en /preferencia) y el admin recibe
-        # aviso únicamente cuando se procesa el pago.
+        # Los mails salen en /pagos/preferencia, cuando ya se conoce el método:
+        # el cliente recibe el link de pago o los datos para transferir, y el
+        # admin recibe aviso por transferencia o cuando se aprueba el pago.
 
         return jsonify({
             "pedido_id": pedido.id,

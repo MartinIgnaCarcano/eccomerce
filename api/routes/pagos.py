@@ -12,8 +12,27 @@ from services.notifications import (
     send_user_payment_rejected,
     send_admin_payment_approved,
     send_admin_payment_rejected,
-    send_user_transfer_instructions
+    send_admin_transfer_order,
+    send_user_order_created,
+    send_user_transfer_instructions,
 )
+
+
+def _datos_transferencia(pedido_id):
+    return {
+        "alias": (os.getenv("TRANSFER_ALIAS") or "caricias.sex.mp").strip(),
+        "cbu": (os.getenv("TRANSFER_CBU") or "").strip() or None,
+        "titular": (os.getenv("TRANSFER_TITULAR") or "Elisa Gramage").strip(),
+        "concepto": f"PEDIDO {pedido_id}",
+    }
+
+
+def _pagos_previos(pedido_id, pago_id, metodo=None):
+    """Pagos anteriores del pedido (sirve para no repetir mails en reintentos)."""
+    q = Pago.query.filter(Pago.pedido_id == pedido_id, Pago.id != pago_id)
+    if metodo:
+        q = q.filter(Pago.metodo_pago == metodo)
+    return q.count()
 
 pagos_bp = Blueprint("pagos", __name__, url_prefix="/pagos")
 
@@ -295,15 +314,15 @@ def crear_preferencia_pago():
             pago.id_preferencia = f"TRANSFER-{pago.id}"
             db.session.commit()
 
-            instrucciones = {
-                "alias": "caricias.sex.mp",
-                "titular": "Elisa Gramage",
-                "concepto": f"PEDIDO {pedido_id}"
-            }
-            
+            instrucciones = _datos_transferencia(pedido_id)
+
+            # Cliente: datos para transferir (siempre que elija transferencia).
+            # Admin: aviso solo la primera vez que el pedido pasa a transferencia.
             usuario = Usuario.query.get(pedido.usuario_id)
             if usuario:
                 send_user_transfer_instructions(usuario, pedido, pago, instrucciones)
+            if not _pagos_previos(pedido_id, pago.id, metodo="transferencia"):
+                send_admin_transfer_order(pedido, pago, usuario)
             return jsonify({
                 "mensaje": "Transferencia registrada",
                 "pedido_id": pedido_id,
@@ -416,6 +435,13 @@ def crear_preferencia_pago():
         pago_mp.url_checkout = pref["init_point"]
         pago_mp.referencia_externa = str(pago_mp.id)  # opcional
         db.session.commit()
+
+        # Aviso de pedido con el link de pago, solo en el primer intento de pago
+        # del pedido (los reintentos desde el perfil no vuelven a mandarlo)
+        if not _pagos_previos(pedido_id, pago_mp.id):
+            usuario = Usuario.query.get(pedido.usuario_id)
+            if usuario:
+                send_user_order_created(usuario, pedido, pago_mp)
 
         return jsonify({
             "preference_id": pref["id"],
