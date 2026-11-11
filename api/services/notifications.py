@@ -34,6 +34,15 @@ METODOS_PAGO = {
     "transferencia": "Transferencia bancaria",
 }
 
+ENVIOS = {
+    "correo": "Envío por correo a domicilio",
+    "transporte": "Envío por transporte",
+    "pickup": "Retiro por el local",
+    "arrange": "Envío a coordinar con el vendedor",
+}
+
+TRANSPORTISTAS = {"viacargo": "Vía Cargo", "cata": "CATA", "andesmar": "Andesmar"}
+
 
 def _e(valor) -> str:
     return str(escape("" if valor is None else valor))
@@ -57,8 +66,90 @@ def _fecha(dt: datetime | None) -> str:
     return dt.strftime("%d/%m/%Y %H:%M") if dt else ""
 
 
-def _nombre(usuario: Usuario | None) -> str:
-    return _e((usuario.nombre if usuario else None) or "allí")
+def _nombre(usuario: Usuario | None, pedido: Pedido | None = None) -> str:
+    """Nombre para el saludo: el que cargó en esta compra, si lo hay."""
+    nombre = getattr(pedido, "contacto_nombre", None) or (usuario.nombre if usuario else None)
+    return _e(nombre or "allí")
+
+
+# ── Envío ──────────────────────────────────────
+
+def _envio_tipo(pedido: Pedido) -> str | None:
+    return getattr(pedido, "envio_tipo", None)
+
+
+def _envio_metodo(pedido: Pedido) -> str:
+    """Ej: 'Envío por transporte (Vía Cargo)'. Pedidos viejos no tienen tipo."""
+    tipo = _envio_tipo(pedido)
+    if not tipo:
+        return "No informado"
+    texto = ENVIOS.get(tipo, tipo)
+    t = getattr(pedido, "envio_transportista", None)
+    if tipo == "transporte" and t:
+        texto += f" ({TRANSPORTISTAS.get(t, t)})"
+    return _e(texto)
+
+
+def _envio_costo(pedido: Pedido) -> str:
+    tipo = _envio_tipo(pedido)
+    if tipo == "pickup":
+        return "Sin cargo"
+    if tipo == "arrange":
+        return "A coordinar (se abona aparte)"
+    costo = float(pedido.costo_envio or 0)
+    return _money(costo) if costo > 0 else "A coordinar"
+
+
+def _envio_direccion(pedido: Pedido) -> str:
+    """Dirección en una línea; vacía si no aplica (retiro / a coordinar)."""
+    partes = [
+        getattr(pedido, "envio_direccion", None),
+        getattr(pedido, "envio_ciudad", None),
+        getattr(pedido, "envio_provincia", None),
+        f"CP {pedido.envio_cp}" if getattr(pedido, "envio_cp", None) else None,
+    ]
+    return _e(", ".join(p for p in partes if p))
+
+
+def _contacto(pedido: Pedido, usuario: Usuario | None) -> tuple[str, str, str]:
+    """(nombre, email, teléfono) de esta compra, con el usuario como respaldo."""
+    nombre = getattr(pedido, "contacto_nombre", None) or (usuario.nombre if usuario else None)
+    email = getattr(pedido, "contacto_email", None) or (usuario.email if usuario else None)
+    tel = getattr(pedido, "contacto_telefono", None) or (usuario.telefono if usuario else None)
+    return _e(nombre or "—"), _e(email or "—"), _e(tel or "—")
+
+
+def _entrega_html(pedido: Pedido, usuario: Usuario | None) -> str:
+    """Bloque 'Entrega' para el cliente: cómo recibe el pedido y qué sigue."""
+    tipo = _envio_tipo(pedido)
+    if not tipo:
+        return ""
+    _, email, tel = _contacto(pedido, usuario)
+    filas = _fila("Método de entrega", _envio_metodo(pedido), primera=True)
+    filas += _fila("Costo de envío", _envio_costo(pedido))
+    direccion = _envio_direccion(pedido)
+    if direccion:
+        filas += _fila("Enviamos a", direccion)
+    extra = getattr(pedido, "envio_extra", None)
+    if extra:
+        filas += _fila("Indicaciones", _e(extra))
+
+    if tipo == "pickup":
+        aviso = (f"Cuando tu pedido esté listo te contactamos al <strong>{tel}</strong> "
+                 f"para coordinar día y horario de retiro.")
+    elif tipo == "arrange":
+        aviso = (f"Nos vamos a comunicar con vos al <strong>{tel}</strong> para acordar "
+                 f"cómo te lo enviamos. El costo del envío se abona aparte.")
+    else:
+        aviso = (f"Te avisamos por mail a <strong>{email}</strong> cuando lo despachemos. "
+                 f"Si algún dato de envío es incorrecto, respondé este mail.")
+    return (
+        '<p class="body-text" style="font-size:11px;letter-spacing:2px;text-transform:uppercase;'
+        'color:#8a6f86;margin:24px 0 8px;">Entrega</p>'
+        f'<div class="info-card" style="margin-top:0;"><table width="100%" cellpadding="0" cellspacing="0">'
+        f"{filas}</table></div>"
+        f'<p class="body-text" style="font-size:14px;">{aviso}</p>'
+    )
 
 
 def _metodo(pago: Pago) -> str:
@@ -95,12 +186,11 @@ def _items_html(pedido: Pedido) -> str:
             f"border-bottom:1px solid #f4e5ee;'>{_money(d.subtotal)}</td>"
             "</tr>"
         )
-    envio = float(pedido.costo_envio or 0)
     filas += (
         "<tr>"
         "<td style='padding:8px 0;color:#8a6f86;font-size:13px;'>Envío</td>"
         f"<td style='padding:8px 0;color:#8a6f86;font-size:13px;text-align:right;'>"
-        f"{_money(envio) if envio > 0 else 'A coordinar / sin cargo'}</td>"
+        f"{_envio_costo(pedido)}</td>"
         "</tr>"
     )
     return (
@@ -474,7 +564,7 @@ def send_user_welcome(usuario: Usuario):
 
 def send_user_order_created(usuario: Usuario, pedido: Pedido, pago: Pago):
     """Pedido creado con Mercado Pago / débito / crédito: incluye el link de pago."""
-    nombre = _nombre(usuario)
+    nombre = _nombre(usuario, pedido)
     vence = _fecha(pedido.expires_at)
     pagar = _boton(pago.url_checkout, "Pagar ahora") if pago.url_checkout else ""
     content = f"""
@@ -486,6 +576,7 @@ def send_user_order_created(usuario: Usuario, pedido: Pedido, pago: Pago):
         Si ya lo pagaste, ignorá este botón: te vamos a avisar cuando se acredite.
       </p>
       {_items_html(pedido)}
+      {_entrega_html(pedido, usuario)}
       <div class="info-card">
         <table width="100%" cellpadding="0" cellspacing="0">
           {_fila("Pedido", f"#{pedido.id}", primera=True, highlight=True)}
@@ -497,7 +588,7 @@ def send_user_order_created(usuario: Usuario, pedido: Pedido, pago: Pago):
       {pagar}
       <p class="body-text" style="font-size:13px;color:#8a6f86;">
         Si no completás el pago antes del vencimiento, la reserva de los productos se libera.
-        El envío se realiza en embalaje neutro y discreto, sin identificación del remitente.
+        Preparamos tu pedido en embalaje neutro y discreto, sin identificación del remitente.
       </p>
       {_link_pedidos(usuario)}
     """
@@ -510,7 +601,7 @@ def send_user_order_created(usuario: Usuario, pedido: Pedido, pago: Pago):
 
 def send_user_transfer_instructions(usuario: Usuario, pedido: Pedido, pago: Pago, instrucciones: dict):
     """Pedido creado con transferencia: datos bancarios y cómo enviar el comprobante."""
-    nombre = _nombre(usuario)
+    nombre = _nombre(usuario, pedido)
     vence = _fecha(pedido.expires_at)
     cbu = instrucciones.get("cbu")
     content = f"""
@@ -521,6 +612,7 @@ def send_user_transfer_instructions(usuario: Usuario, pedido: Pedido, pago: Pago
         transferí el monto indicado a los siguientes datos.
       </p>
       {_items_html(pedido)}
+      {_entrega_html(pedido, usuario)}
       <div class="info-card">
         <table width="100%" cellpadding="0" cellspacing="0">
           {_fila("Monto a transferir", _money(pago.monto), primera=True, highlight=True)}
@@ -564,7 +656,7 @@ def send_user_transfer_instructions(usuario: Usuario, pedido: Pedido, pago: Pago
 
 
 def send_user_payment_approved(usuario: Usuario, pedido: Pedido, pago: Pago):
-    nombre = _nombre(usuario)
+    nombre = _nombre(usuario, pedido)
     content = f"""
       <span class="status-badge">Pago aprobado</span>
       <h1 class="greeting">¡Pago confirmado,<br/>{nombre}!</h1>
@@ -573,6 +665,7 @@ def send_user_payment_approved(usuario: Usuario, pedido: Pedido, pago: Pago):
         para que llegue a vos lo antes posible.
       </p>
       {_items_html(pedido)}
+      {_entrega_html(pedido, usuario)}
       <div class="info-card">
         <table width="100%" cellpadding="0" cellspacing="0">
           {_fila("Pedido", f"#{pedido.id}", primera=True, highlight=True)}
@@ -580,9 +673,8 @@ def send_user_payment_approved(usuario: Usuario, pedido: Pedido, pago: Pago):
           {_fila("Método", _metodo(pago))}
         </table>
       </div>
-      <p class="body-text">
-        Te avisaremos cuando tu pedido sea despachado. El envío se realiza en
-        embalaje neutro y discreto.
+      <p class="body-text" style="font-size:13px;color:#8a6f86;">
+        Preparamos tu pedido en embalaje neutro y discreto, sin identificación del remitente.
       </p>
       {_link_pedidos(usuario)}
     """
@@ -594,7 +686,7 @@ def send_user_payment_approved(usuario: Usuario, pedido: Pedido, pago: Pago):
 
 
 def send_user_payment_rejected(usuario: Usuario, pedido: Pedido, pago: Pago):
-    nombre = _nombre(usuario)
+    nombre = _nombre(usuario, pedido)
     detalle = _e(pago.detalle_estado or "Sin detalle disponible")
     reintentar = _boton(pago.url_checkout, "Reintentar pago") if pago.url_checkout else ""
     content = f"""
@@ -624,19 +716,39 @@ def send_user_payment_rejected(usuario: Usuario, pedido: Pedido, pago: Pago):
 #  Notificaciones al admin
 # ─────────────────────────────────────────────
 
-def _admin_cliente_rows(usuario: Usuario | None) -> list[tuple]:
-    if not usuario:
-        return [("Cliente", "desconocido")]
+def _admin_cliente_rows(usuario: Usuario | None, pedido: Pedido) -> list[tuple]:
+    """Contacto y entrega de ESTA compra (lo que cargó el cliente en el checkout)."""
+    nombre, email, tel = _contacto(pedido, usuario)
+    tipo_cuenta = "invitado" if (usuario and usuario.rol == "guest") else "registrado"
     filas = [
-        ("Cliente", f"{_e(usuario.nombre or '—')} ({'invitado' if usuario.rol == 'guest' else 'registrado'})"),
-        ("Email", _e(usuario.email)),
-        ("Teléfono", _e(usuario.telefono or "—")),
+        ("Cliente", f"{nombre} ({tipo_cuenta})"),
+        ("Email", email),
+        ("Teléfono", tel),
+        ("Entrega", _envio_metodo(pedido)),
+        ("Costo envío", _envio_costo(pedido)),
     ]
-    d = getattr(usuario, "direccion", None)
-    if d:
+    direccion = _envio_direccion(pedido)
+    if direccion:
+        filas.append(("Dirección", direccion))
+    if getattr(pedido, "envio_extra", None):
+        filas.append(("Indicaciones", _e(pedido.envio_extra)))
+    if not _envio_tipo(pedido) and usuario and getattr(usuario, "direccion", None):
+        # Pedido anterior a guardar el envío: al menos la dirección del perfil
+        d = usuario.direccion
         partes = [d.calle, d.departamento, d.provincia, d.codigo_postal, d.pais]
         filas.append(("Dirección (perfil)", _e(", ".join(str(p) for p in partes if p))))
     return filas
+
+
+def _admin_nota_entrega(pedido: Pedido) -> str:
+    """Qué tiene que hacer el admin según el tipo de entrega."""
+    _, _, tel = _contacto(pedido, None)
+    return {
+        "pickup": f"Retira en el local: avisale al {tel} cuando esté listo para coordinar el retiro.",
+        "arrange": f"Envío a coordinar: contactalo al {tel} para acordar el envío y su costo.",
+        "correo": "Despachar por correo a la dirección indicada.",
+        "transporte": "Despachar por el transporte indicado a la dirección indicada.",
+    }.get(_envio_tipo(pedido), "Coordinar la entrega con el cliente (el pedido no informa tipo de envío).")
 
 
 def _admin_html(title: str, rows: list[tuple], pedido: Pedido | None = None, nota: str = "") -> str:
@@ -659,7 +771,7 @@ def _admin_html(title: str, rows: list[tuple], pedido: Pedido | None = None, not
         )
         items += (
             f"<tr><td style='padding:6px 14px;font-size:13px;color:#8a6f86;'>Envío</td>"
-            f"<td style='padding:6px 14px;font-size:13px;color:#8a6f86;text-align:right;'>{_money(pedido.costo_envio)}</td></tr>"
+            f"<td style='padding:6px 14px;font-size:13px;color:#8a6f86;text-align:right;'>{_envio_costo(pedido)}</td></tr>"
         )
         items = (
             "<p style='margin:20px 0 8px;color:#8a6f86;font-size:12px;letter-spacing:1px;text-transform:uppercase;'>Productos</p>"
@@ -690,8 +802,8 @@ def send_admin_payment_approved(pedido: Pedido, pago: Pago, usuario: Usuario | N
         ("Método", _metodo(pago)),
         ("Pago MP", _e(pago.id_pago_mp or "—")),
         ("Estado pedido", _e(ESTADOS_PEDIDO.get(pedido.estado, pedido.estado))),
-        *_admin_cliente_rows(usuario),
-    ], pedido=pedido, nota="Preparar el envío. Coordinar dirección con el cliente si no figura arriba.")
+        *_admin_cliente_rows(usuario, pedido),
+    ], pedido=pedido, nota=_admin_nota_entrega(pedido))
     _safe_send(_admin_email(), f"[Caricias] Pago aprobado · Pedido #{pedido.id} · {_money(pago.monto)}", html)
 
 
@@ -701,7 +813,7 @@ def send_admin_payment_rejected(pedido: Pedido, pago: Pago, usuario: Usuario | N
         ("Monto", _money(pago.monto)),
         ("Método", _metodo(pago)),
         ("Motivo", _e(pago.detalle_estado or "—")),
-        *_admin_cliente_rows(usuario),
+        *_admin_cliente_rows(usuario, pedido),
     ])
     _safe_send(_admin_email(), f"[Caricias] Pago rechazado · Pedido #{pedido.id}", html)
 
@@ -712,8 +824,9 @@ def send_admin_transfer_order(pedido: Pedido, pago: Pago, usuario: Usuario | Non
         ("Monto a recibir", _money(pago.monto)),
         ("Concepto", f"PEDIDO {pedido.id}"),
         ("Reservado hasta", _fecha(pedido.expires_at) or "—"),
-        *_admin_cliente_rows(usuario),
+        *_admin_cliente_rows(usuario, pedido),
     ], pedido=pedido,
         nota="El cliente va a responder el mail de instrucciones con el comprobante. "
-             "Verificá la acreditación en la cuenta y pasá el pedido a PAGADO desde el panel.")
+             "Verificá la acreditación en la cuenta y pasá el pedido a PAGADO desde el panel. "
+             "Después: " + _admin_nota_entrega(pedido))
     _safe_send(_admin_email(), f"[Caricias] Transferencia a verificar · Pedido #{pedido.id} · {_money(pago.monto)}", html)

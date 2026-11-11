@@ -20,6 +20,18 @@ def require_admin():
 #1440 minutos = 24hs
 RESERVA_MINUTOS = 1440
 
+ENVIO_TIPOS = {"correo", "transporte", "pickup", "arrange"}
+ENVIO_TRANSPORTISTAS = {"viacargo", "cata", "andesmar"}
+
+
+def _txt(data, clave, largo):
+    """Texto del checkout limpio y recortado al largo de la columna (o None)."""
+    valor = data.get(clave)
+    if valor is None:
+        return None
+    valor = " ".join(str(valor).split())
+    return valor[:largo] or None
+
 #-----------------
 #-----USER--------
 #-----------------
@@ -128,8 +140,8 @@ def crear_pedido():
 
         if usuario_id is None:
             email = (data.get("email") or "").strip().lower()
-            nombre = data.get("nombre", "Invitado")
-            telefono = data.get("telefono")
+            nombre = _txt(data, "nombre", 100) or "Invitado"
+            telefono = _txt(data, "telefono", 20)
 
             if not email:
                 return jsonify({"error": "Para pedidos sin registrarse, se requiere email"}), 400
@@ -159,6 +171,12 @@ def crear_pedido():
                 )
                 db.session.add(usuario)
                 db.session.flush()  # <-- NO commit todavía
+            else:
+                # Invitado que vuelve a comprar: sus datos más recientes
+                if nombre != "Invitado":
+                    usuario.nombre = nombre
+                if telefono:
+                    usuario.telefono = telefono
 
             usuario_id = usuario.id
         else:
@@ -208,7 +226,18 @@ def crear_pedido():
                 )
             )
 
+        # Datos de envío de esta compra (validados contra los valores del checkout)
+        envio_tipo = (_txt(data, "envio_tipo", 20) or "").lower() or None
+        if envio_tipo not in ENVIO_TIPOS:
+            envio_tipo = None
+        transportista = (_txt(data, "envio_transportista", 20) or "").lower() or None
+        if envio_tipo != "transporte" or transportista not in ENVIO_TRANSPORTISTAS:
+            transportista = None
+        con_domicilio = envio_tipo in ("correo", "transporte")
+
         costo_envio = Decimal(str(data.get("costo_envio", 0) or 0)).quantize(Decimal("0.01"))
+        if envio_tipo in ("pickup", "arrange"):
+            costo_envio = Decimal("0.00")  # retiro / a coordinar: no se cobra en la web
         total_final = (total + costo_envio).quantize(Decimal("0.01"))
 
         pedido = Pedido(
@@ -219,7 +248,17 @@ def crear_pedido():
             detalles=detalles_pedido,
             expires_at=now_ar() + timedelta(minutes=RESERVA_MINUTOS),
             stock_state="reserved",
-            claim_token=secrets.token_urlsafe(32)
+            claim_token=secrets.token_urlsafe(32),
+            contacto_nombre=_txt(data, "nombre", 120) or (usuario.nombre if usuario else None),
+            contacto_email=(usuario.email if usuario else None) or _txt(data, "email", 120),
+            contacto_telefono=_txt(data, "telefono", 40) or (usuario.telefono if usuario else None),
+            envio_tipo=envio_tipo,
+            envio_transportista=transportista,
+            envio_direccion=_txt(data, "envio_direccion", 255) if con_domicilio else None,
+            envio_ciudad=_txt(data, "envio_ciudad", 100) if con_domicilio else None,
+            envio_provincia=_txt(data, "envio_provincia", 100) if con_domicilio else None,
+            envio_cp=_txt(data, "envio_cp", 20) if con_domicilio else None,
+            envio_extra=_txt(data, "envio_extra", 255),
         )
 
         db.session.add(pedido)

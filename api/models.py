@@ -116,6 +116,19 @@ class Pedido(db.Model):
     total = db.Column(db.Numeric(10,2), default=0)
     costo_envio = db.Column(db.Numeric(10,2), default=0)
 
+    # Datos de ESTA compra, tal como los cargó el cliente en el checkout
+    # (no se toman del usuario: pueden cambiar entre compras)
+    contacto_nombre = db.Column(db.String(120), nullable=True)
+    contacto_email = db.Column(db.String(120), nullable=True)
+    contacto_telefono = db.Column(db.String(40), nullable=True)
+    envio_tipo = db.Column(db.String(20), nullable=True)           # correo | transporte | pickup | arrange
+    envio_transportista = db.Column(db.String(20), nullable=True)  # viacargo | cata | andesmar
+    envio_direccion = db.Column(db.String(255), nullable=True)
+    envio_ciudad = db.Column(db.String(100), nullable=True)
+    envio_provincia = db.Column(db.String(100), nullable=True)
+    envio_cp = db.Column(db.String(20), nullable=True)
+    envio_extra = db.Column(db.String(255), nullable=True)
+
     # token secreto para que un invitado (sin JWT) pruebe la propiedad del pedido
     # al crear la preferencia de pago
     claim_token = db.Column(db.String(64), nullable=True)
