@@ -1,0 +1,6 @@
+# Generados o con secretos del servidor: no van a git
+api/.htaccess
+api/.htaccess.bak
+api/stderr.log
+api/logs/
+.well-known/
