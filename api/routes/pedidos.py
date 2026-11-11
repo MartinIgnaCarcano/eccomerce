@@ -452,8 +452,28 @@ def eliminar_pedido(id):
         
         if not pedido:
             return jsonify({"error": "Pedido no encontrado"}), 404
+
+        # Stock todavía reservado (pedido sin pagar): se devuelve
+        stock_devuelto = pedido.stock_state == "reserved"
+        if stock_devuelto:
+            for d in pedido.detalles:
+                prod = Producto.query.get(d.producto_id)
+                if prod:
+                    prod.stock += int(d.cantidad)
+
+        # Pagos e ítems se borran explícitamente (por el ORM, así sabe que ya
+        # no existen): sin esto intenta poner pagos.pedido_id = NULL, MySQL lo
+        # convierte en 0 y falla la clave foránea (error 1452).
+        for pago in Pago.query.filter_by(pedido_id=pedido.id).all():
+            db.session.delete(pago)
+        for detalle in pedido.detalles:
+            db.session.delete(detalle)
         db.session.delete(pedido)
         db.session.commit()
+        current_app.logger.info(
+            "Pedido %s eliminado por admin id=%s (estado=%s, stock_devuelto=%s)",
+            id, admin.id, pedido.estado, stock_devuelto,
+        )
         return jsonify({"message": "Pedido eliminado"}), 200
     except Exception as e:
         db.session.rollback()
