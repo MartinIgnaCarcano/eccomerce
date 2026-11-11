@@ -10,7 +10,7 @@ from datetime import datetime
 from flask import current_app
 from markupsafe import escape
 from models import Usuario, Pedido, Pago
-from services.email_service import send_email_async
+from services.email_service import send_email_safe
 
 
 # ─────────────────────────────────────────────
@@ -77,7 +77,7 @@ def _safe_send(to, subject, html, cuenta="ventas", reply_to=None):
         current_app.logger.warning("EMAIL: destinatario vacio, se ignora: %r", subject)
         return
     try:
-        send_email_async(to=to, subject=subject, html=html, cuenta=cuenta, reply_to=reply_to)
+        send_email_safe(to=to, subject=subject, html=html, cuenta=cuenta, reply_to=reply_to)
     except Exception:
         current_app.logger.exception("EMAIL ERROR: to=%r subject=%r", to, subject)
 

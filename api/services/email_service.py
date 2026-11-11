@@ -13,7 +13,7 @@ import os
 import re
 import smtplib
 import ssl
-import threading
+
 from email.message import EmailMessage
 from email.utils import formataddr, formatdate, make_msgid
 
@@ -76,9 +76,9 @@ def _enviar_smtp(msg, destinatarios, cuenta):
 
     print(f"[MAIL] conectando a {host}:{port} ssl={use_ssl} tls={use_tls} como {user} → {destinatarios}", flush=True)
     if use_ssl:
-        smtp = smtplib.SMTP_SSL(host, port, timeout=20, context=contexto)
+        smtp = smtplib.SMTP_SSL(host, port, timeout=10, context=contexto)
     else:
-        smtp = smtplib.SMTP(host, port, timeout=20)
+        smtp = smtplib.SMTP(host, port, timeout=10)
     with smtp:
         print("[MAIL] conectado", flush=True)
         if use_tls and not use_ssl:
@@ -95,25 +95,21 @@ def send_email(to: str, subject: str, html: str, cc=None, bcc=None, reply_to=Non
     _enviar_smtp(msg, destinatarios, cuenta)
 
 
-def send_email_async(to: str, subject: str, html: str, cc=None, bcc=None, reply_to=None, cuenta="ventas"):
-    """Arma el mail ya y lo envía en segundo plano, para no demorar la respuesta
-    (checkout, webhook). Los errores quedan en el log."""
+def send_email_safe(to: str, subject: str, html: str, cc=None, bcc=None, reply_to=None, cuenta="ventas"):
+    """Envía dentro de la request y nunca lanza: si falla, queda en el log.
+
+    No se usa un hilo en segundo plano: en el hosting (LiteSpeed) los hilos se
+    congelan cuando termina la request y el mail no sale nunca. Cuesta ~1-2 s
+    por mail en el checkout/webhook, pero el envío es seguro.
+    """
     app = current_app._get_current_object()
     # Por si la app arranca sin logging_setup (ej. local): que se vean los INFO
     if app.logger.level == logging.NOTSET:
         app.logger.setLevel(logging.INFO)
     print(f"[MAIL] preparando: cuenta={cuenta} to={to!r} subject={subject!r}", flush=True)
-    msg, destinatarios = _construir(to, subject, html, cuenta, cc, bcc, reply_to)
-
-    def _worker():
-        print(f"[MAIL] hilo iniciado para {to!r}", flush=True)
-        try:
-            _enviar_smtp(msg, destinatarios, cuenta)
-            app.logger.info("EMAIL enviado: cuenta=%s to=%r subject=%r", cuenta, to, subject)
-        except Exception:
-            app.logger.exception("EMAIL ERROR: cuenta=%s to=%r subject=%r", cuenta, to, subject)
-        finally:
-            print(f"[MAIL] hilo terminado para {to!r}", flush=True)
-
-    threading.Thread(target=_worker, daemon=True).start()
-    print(f"[MAIL] hilo lanzado para {to!r}", flush=True)
+    try:
+        msg, destinatarios = _construir(to, subject, html, cuenta, cc, bcc, reply_to)
+        _enviar_smtp(msg, destinatarios, cuenta)
+        app.logger.info("EMAIL enviado: cuenta=%s to=%r subject=%r", cuenta, to, subject)
+    except Exception:
+        app.logger.exception("EMAIL ERROR: cuenta=%s to=%r subject=%r", cuenta, to, subject)
